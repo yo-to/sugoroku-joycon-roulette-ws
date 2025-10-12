@@ -1,6 +1,7 @@
 // client-cli.js
 const WebSocket = require("ws");
-const ws = new WebSocket("ws://localhost:8080/ws");
+const ws = new WebSocket("ws://localhost:8080/");
+// const ws = new WebSocket("ws://localhost:8080/ws");
 
 ws.on("open", () => console.log("connected"));
 ws.on("message", (msg) => console.log("received:", msg.toString()));
