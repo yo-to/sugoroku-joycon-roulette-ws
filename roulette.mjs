@@ -6,6 +6,7 @@
 //
 // WebSocket 接続先（接続毎に指定可能）:
 //   ws://localhost:8080/ws?mode=1|2|3|4&interval=<ms>&fps=<n>
+//   ⇒ ws://localhost:8080/?mode=1|2|3|4&interval=<ms>&fps=<n>
 //     - mode:
 //         1) 従来: JSON {type:"roulette:number", data:{raw, value, ts, state}} を随時送信（"sensor-update" も併送）
 //         2) 停止に遷移した瞬間のみ、数値（1..10）を JSON の data として送信
@@ -998,7 +999,7 @@ app.get("/", (_req, res) => {
 </style>
 </head><body>
 <h1>Roulette</h1>
-<div class="row">接続先: <code>ws(s)://{host}/ws?mode=&lt;1|2|3|4&gt;&interval=&lt;ms&gt;&fps=&lt;n&gt;</code>（このページのクエリを転用）</div>
+<div class="row">接続先: <code>ws(s)://{host}/?mode=&lt;1|2|3|4&gt;&interval=&lt;ms&gt;&fps=&lt;n&gt;</code>（このページのクエリを転用）</div>
 <div class="row">今のモード: <strong id="mode">–</strong>（1:従来 / 2:停止時のみ数字 / 3:回転中「⟳数字」停止時は数字 / 4:回転中「rot_数字」停止時は「数字」（生テキスト））</div>
 <div class="row">送信間隔: <strong id="interval">–</strong> / およそFPS: <strong id="fps">–</strong></div>
 <div id="v">–</div>
@@ -1019,7 +1020,7 @@ app.get("/", (_req, res) => {
   document.getElementById('interval').textContent = interval > 0 ? (interval + " ms") : "無制限";
   document.getElementById('fps').textContent = isFinite(fps) ? (fps + " fps") : "無制限";
 
-  const WS_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws?mode=" + mode + "&interval=" + interval;
+  const WS_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/?mode=" + mode + "&interval=" + interval;
   const s = new WebSocket(WS_URL);
 
   const v = document.getElementById('v');
@@ -1091,7 +1092,7 @@ app.get("/", (_req, res) => {
 });
 
 // --- WebSocket サーバ（ws）---
-const wss = new WebSocketServer({ server, path: "/ws" });
+const wss = new WebSocketServer({ server, path: "/" });
 
 // ---- 送信ユーティリティ（頻度制御対応） ----
 function sendJSON(ws, type, data) {
