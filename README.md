@@ -23,7 +23,7 @@ npm i node-hid express ws winston
 
 ```zsh
 node roulette.mjs
-```zsh
+```
 
 #### デバッグ用の仕組み
 
@@ -31,4 +31,4 @@ node roulette.mjs
 
 ```zsh
 node client.js
-```zsh
+```
